@@ -55,9 +55,11 @@ dotnet build Overlay/Vape.Overlay.csproj -c Release
 - `bin/x64/Release/Vape.dll`
 - `Overlay/bin/Release/net10.0-windows/Vape.Overlay.exe`（可选）
 
-### 关于 `引用/` 目录
+### 关于 `依赖/` 目录
 
-本仓库**不包含**游戏原版程序集。请自行从本地客户端复制所需 DLL 到 `引用/`（与 `Vape.csproj` 中 HintPath 一致）后再编译。
+编译所需的游戏/引擎程序集位于仓库根目录 **`依赖/`**（由原 `引用/` 重命名）。`Vape.csproj` 的 HintPath 已指向该目录。
+
+同时仓库跟踪 **`bin/`**、**`obj/`** 构建产物，便于直接取用 `bin/x64/Release/Vape.dll`。
 
 ---
 

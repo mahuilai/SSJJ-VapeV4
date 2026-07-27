@@ -48,67 +48,67 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>引用\Assembly-CSharp.dll</HintPath>
+      <HintPath>依赖\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="base.net">
-      <HintPath>引用\base.net.dll</HintPath>
+      <HintPath>依赖\base.net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Entitas">
-      <HintPath>引用\Entitas.dll</HintPath>
+      <HintPath>依赖\Entitas.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Loxodon.Framework">
-      <HintPath>引用\Loxodon.Framework.dll</HintPath>
+      <HintPath>依赖\Loxodon.Framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Loxodon.Framework.View">
-      <HintPath>引用\Loxodon.Framework.View.dll</HintPath>
+      <HintPath>依赖\Loxodon.Framework.View.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>引用\Newtonsoft.Json.dll</HintPath>
+      <HintPath>依赖\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="physics.net">
-      <HintPath>引用\physics.net.dll</HintPath>
+      <HintPath>依赖\physics.net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SSJJ.Contract">
-      <HintPath>引用\SSJJ.Contract.dll</HintPath>
+      <HintPath>依赖\SSJJ.Contract.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SSJJAsset_Library">
-      <HintPath>引用\SSJJAsset_Library.dll</HintPath>
+      <HintPath>依赖\SSJJAsset_Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SSJJBase_Library">
-      <HintPath>引用\SSJJBase_Library.dll</HintPath>
+      <HintPath>依赖\SSJJBase_Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SSJJEntitas_Library">
-      <HintPath>引用\SSJJEntitas_Library.dll</HintPath>
+      <HintPath>依赖\SSJJEntitas_Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SSJJMath_Library">
-      <HintPath>引用\SSJJMath_Library.dll</HintPath>
+      <HintPath>依赖\SSJJMath_Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SSJJNetworking_Library">
-      <HintPath>引用\SSJJNetworking_Library.dll</HintPath>
+      <HintPath>依赖\SSJJNetworking_Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SSJJPhysics_Library">
-      <HintPath>引用\SSJJPhysics_Library.dll</HintPath>
+      <HintPath>依赖\SSJJPhysics_Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SSJJSpine_Library">
-      <HintPath>引用\SSJJSpine_Library.dll</HintPath>
+      <HintPath>依赖\SSJJSpine_Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SSJJUserCmd_Library">
-      <HintPath>引用\SSJJUserCmd_Library.dll</HintPath>
+      <HintPath>依赖\SSJJUserCmd_Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -122,39 +122,39 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>引用\UnityEngine.dll</HintPath>
+      <HintPath>依赖\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>引用\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>依赖\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>引用\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>依赖\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>引用\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>依赖\UnityEngine.InputLegacyModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>引用\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>依赖\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>引用\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>依赖\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>引用\UnityEngine.UI.dll</HintPath>
+      <HintPath>依赖\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="weaponPredicateNet.net">
-      <HintPath>引用\weaponPredicateNet.net.dll</HintPath>
+      <HintPath>依赖\weaponPredicateNet.net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="zlib.net">
-      <HintPath>引用\zlib.net.dll</HintPath>
+      <HintPath>依赖\zlib.net.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>False</Private>
     </Reference>
