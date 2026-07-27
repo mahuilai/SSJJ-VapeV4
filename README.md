@@ -1,4 +1,4 @@
-# Vape
+# SSJJ_Vape
 
 面向 **生死狙击（Unity/Mono）** 的研究用注入模块。提供可拖拽多窗口 ClickGUI、ESP/辅助视觉、自瞄与配置系统。
 
