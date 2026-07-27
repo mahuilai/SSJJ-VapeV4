@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vape", "Vape.csproj", "{8E111C19-AF18-49EB-8FB6-D16499327FAD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{178A59AB-26FA-0D53-5A85-CE27EDD23CDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vape.Overlay", "Overlay\Vape.Overlay.csproj", "{339296D2-98AD-4FFB-9098-9DCEDC0387E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Debug|x64.ActiveCfg = Debug|x64
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Debug|x64.Build.0 = Debug|x64
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Debug|x86.Build.0 = Debug|Any CPU
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Release|x64.ActiveCfg = Release|x64
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Release|x64.Build.0 = Release|x64
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Release|x86.ActiveCfg = Release|Any CPU
+		{8E111C19-AF18-49EB-8FB6-D16499327FAD}.Release|x86.Build.0 = Release|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Debug|x64.Build.0 = Debug|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Debug|x86.Build.0 = Debug|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Release|x64.ActiveCfg = Release|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Release|x64.Build.0 = Release|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Release|x86.ActiveCfg = Release|Any CPU
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{339296D2-98AD-4FFB-9098-9DCEDC0387E9} = {178A59AB-26FA-0D53-5A85-CE27EDD23CDA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D157D780-1272-4022-A3FB-B6C13C3EB50A}
+	EndGlobalSection
+EndGlobal

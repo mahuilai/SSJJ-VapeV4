@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseWindowsForms>false</UseWindowsForms>
+    <ApplicationIcon />
+    <StartupObject>Vape.Overlay.Program</StartupObject>
+    <AssemblyName>Vape.Overlay</AssemblyName>
+    <RootNamespace>Vape.Overlay</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ClickableTransparentOverlay" Version="11.1.0" />
+    <PackageReference Include="ImGui.NET" Version="1.91.6.1" />
+  </ItemGroup>
+</Project>
