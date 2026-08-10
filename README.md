@@ -36,10 +36,6 @@
 
 ![Esc游戏设置HUD.png](docs/images/Esc游戏设置HUD.png)
 
-### CSGO_HUD 功能示例（图一）
-
-![CSGO_HUD功能示例.png](docs/images/CSGO_HUD功能示例.png)
-
 ## 功能概览
 
 - 卡片式 ClickGUI、中文界面和配置保存/加载
@@ -102,9 +98,13 @@ dotnet msbuild Vape.csproj -t:Rebuild -p:Configuration=Release -p:Platform=x64
 C:\Users\<用户名>\Desktop\CSGO_HUD\
 ```
 
-桌面目录示例（图二）：
+桌面目录示例（图一）：
 
 ![CSGO_HUD 桌面目录示例](docs/images/CSGO_HUD桌面目录示例.png)
+
+### CSGO_HUD 功能示例（图二）
+
+![CSGO_HUD功能示例.png](docs/images/CSGO_HUD功能示例.png)
 
 因此，运行测试前请把仓库里的 `CSGO_HUD/` 整个文件夹复制到桌面，目录名和文件名都不要改。当前目录包含：
 
@@ -154,23 +154,6 @@ tools/DickInjector/
 7. 执行加载后，按模块自身的入口约定验证结果。出现异常时先查看注入器日志和 Unity 日志，不要把包含 PID、路径或账号信息的日志提交到仓库。
 
 不要在未授权的线上环境使用，也不要把“隐匿”“绕过检测”类选项当作正常发布流程的一部分。
-
-### 下载地址
-
-项目源码：
-
-- https://github.com/BaoAn520/SSJJ_Vape
-
-仓库文件直链（文件推送到 `main` 分支后可用）：
-
-- `Dick.exe`：https://github.com/BaoAn520/SSJJ_Vape/raw/refs/heads/main/tools/DickInjector/Dick.exe
-- `Dick.Core.dll`：https://github.com/BaoAn520/SSJJ_Vape/raw/refs/heads/main/tools/DickInjector/Dick.Core.dll
-
-上游项目源码与许可证：
-
-- https://github.com/TheHolyOneZ/SharpMonoInjector-2.7-TheHolyOneZ-Edition-
-
-本仓库仅保留了用于发布的两个文件和上游许可证副本。发布前请再次核对上游项目的许可证、二进制再分发条款以及你对修改版文件的发布权限。
 
 ## 发布清单
 
