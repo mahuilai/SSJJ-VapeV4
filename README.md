@@ -10,7 +10,7 @@
 ### 驱动保护过检测
 
 ![驱动保护过检测示意图](docs/images/驱动保护过检测.png)
-https://github.com/mahuilai/SSJJ-VapeV4/blob/main/5cc4622221ac267d4b6c407065db26c4.png
+![驱动过检测](https://github.com/mahuilai/SSJJ-VapeV4/blob/main/5cc4622221ac267d4b6c407065db26c4.png)
 
 ### 功能示例
 
