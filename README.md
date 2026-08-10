@@ -8,31 +8,31 @@
 
 截图来自 `C:\Users\Mahuilai\Pictures\Screenshots`，已复制到 `docs/images/`，文件名保持不变。
 
-### 驱动保护过检测.png
+### 驱动保护过检测
 
-![驱动保护过检测.png](docs/images/驱动保护过检测.png)
+![驱动保护过检测示意图](docs/images/驱动保护过检测.png)
 
-### 菜单GUI卡片.png
+### 菜单GUI卡
 
-![菜单GUI卡片.png](docs/images/菜单GUI卡片.png)
+![菜单GUI卡片示意图](docs/images/菜单GUI卡片.png)
 
-### 图片、音效资源调用.png
+### 图片、音效资源调用
 
-![图片、音效资源调用.png](docs/images/图片、音效资源调用.png)
+![图片、音效资源调用示意图](docs/images/图片、音效资源调用.png)
 
-### 注入器配置页面.png
+### 注入器配置页面
 
-![注入器配置页面.png](docs/images/注入器配置页面.png)
+![注入器配置页面示意图](docs/images/注入器配置页面.png)
 
-### CSGO风格击杀图标.png
+### CSGO风格击杀图标
 
 ![CSGO风格击杀图标.png](docs/images/CSGO风格击杀图标.png)
 
-### CSGO风格HUD.png
+### CSGO风格HUD
 
 ![CSGO风格HUD.png](docs/images/CSGO风格HUD.png)
 
-### Esc游戏设置HUD.png
+### Esc游戏设置HUD.
 
 ![Esc游戏设置HUD.png](docs/images/Esc游戏设置HUD.png)
 
@@ -140,9 +140,13 @@ tools/DickInjector/
 
 1. 将 `tools/DickInjector/` 复制到桌面，例如 `C:\Users\Mahuilai\Desktop\SharpMonoInjector\`。
 2. 确认 `Dick.exe` 与 `Dick.Core.dll` 位于同一层目录。
+![Dick 注入器目录示例](docs/images/Dick注入器目录示例.png)
 3. 将 `CSGO_HUD/` 复制到桌面，并准备好 `bin/x64/Release/Vape.dll`。
+![图片、音效资源调用示意图](docs/images/图片、音效资源调用.png)
 4. 启动你自己的 Unity/Mono 测试程序，并进入允许加载测试模块的场景。
+![驱动保护过检测示意图](docs/images/驱动保护过检测.png)
 5. 运行 `Dick.exe`，选择目标 Mono 进程和 `Vape.dll`。
+![注入器配置页面示意图](docs/images/注入器配置页面.png)
 6. 使用以下入口配置：
 
    | 项目 | 值 |
@@ -151,9 +155,9 @@ tools/DickInjector/
    | Class | `Loader` |
    | Method | `Load` |
 
-7. 执行加载后，按模块自身的入口约定验证结果。出现异常时先查看注入器日志和 Unity 日志，不要把包含 PID、路径或账号信息的日志提交到仓库。
+7. 执行加载后，按模块自身的入口约定验证结果。出现异常时先查看注入器日志和 Unity 日志。
 
-不要在未授权的线上环境使用，也不要把“隐匿”“绕过检测”类选项当作正常发布流程的一部分。
+不要在未授权的线上环境使用。。。
 
 ## 许可证与免责声明
 
