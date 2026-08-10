@@ -163,6 +163,8 @@ Vape.dll产物地址：https://github.com/mahuilai/SSJJ-VapeV4/blob/main/bin/Rel
 
 ![注入器配置页面示意图](docs/images/注入器配置页面.png)
 
+记得勾选隐藏注入模式：Enable Stealth Mode
+
 6. 使用以下入口配置：
 
    | 项目 | 值 |
