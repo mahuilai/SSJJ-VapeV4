@@ -11,6 +11,10 @@
 
 ![驱动保护过检测示意图](docs/images/驱动保护过检测.png)
 
+### 功能示例
+
+![CSGO_HUD功能示例.png](docs/images/CSGO_HUD功能示例.png)
+
 ### 菜单GUI卡
 
 ![菜单GUI卡片示意图](docs/images/菜单GUI卡片.png)
@@ -129,7 +133,7 @@ tools/DickInjector/
 
 `Dick.exe` 和 `Dick.Core.dll` 必须放在同一个目录。图三中的 `runtime.log` 是本机运行日志，包含进程名、PID、时间和运行记录，不随项目发布。
 
-注入器目录示例（图三）：
+注入器目录示例：
 
 ![Dick 注入器目录示例](docs/images/Dick注入器目录示例.png)
 
@@ -139,12 +143,16 @@ tools/DickInjector/
 
 1. 将 `tools/DickInjector/` 复制到桌面，例如 `C:\Users\Mahuilai\Desktop\SharpMonoInjector\`。
 2. 确认 `Dick.exe` 与 `Dick.Core.dll` 位于同一层目录。
+
 ![Dick 注入器目录示例](docs/images/Dick注入器目录示例.png)
 3. 将 `CSGO_HUD/` 复制到桌面，并准备好 `bin/x64/Release/Vape.dll`。
-![图片、音效资源调用示意图](docs/images/图片、音效资源调用.png)
+
+![CSGO_HUD 桌面目录示例](docs/images/CSGO_HUD桌面目录示例.png)
 4. 启动你自己的 Unity/Mono 测试程序，并进入允许加载测试模块的场景。
+
 ![驱动保护过检测示意图](docs/images/驱动保护过检测.png)
 5. 运行 `Dick.exe`，选择目标 Mono 进程和 `Vape.dll`。
+
 ![注入器配置页面示意图](docs/images/注入器配置页面.png)
 6. 使用以下入口配置：
 
