@@ -8,13 +8,13 @@
 
 截图来自 `C:\Users\Mahuilai\Pictures\Screenshots`，已复制到 `docs/images/`，文件名保持不变。
 
-### 菜单GUI卡片.png
-
-![菜单GUI卡片.png](docs/images/菜单GUI卡片.png)
-
 ### 驱动保护过检测.png
 
 ![驱动保护过检测.png](docs/images/驱动保护过检测.png)
+
+### 菜单GUI卡片.png
+
+![菜单GUI卡片.png](docs/images/菜单GUI卡片.png)
 
 ### 图片、音效资源调用.png
 
@@ -154,27 +154,6 @@ tools/DickInjector/
 7. 执行加载后，按模块自身的入口约定验证结果。出现异常时先查看注入器日志和 Unity 日志，不要把包含 PID、路径或账号信息的日志提交到仓库。
 
 不要在未授权的线上环境使用，也不要把“隐匿”“绕过检测”类选项当作正常发布流程的一部分。
-
-## 发布清单
-
-开源压缩包至少应包含：
-
-- 源码目录和 `Vape.csproj`
-- `依赖/`
-- `bin/Release/` 和 `bin/x64/Release/`
-- `CSGO_HUD/`
-- `docs/images/`
-- `tools/DickInjector/Dick.exe`
-- `tools/DickInjector/Dick.Core.dll`
-- `tools/DickInjector/THIRD_PARTY_LICENSE.txt`
-- 本 README
-
-不要提交：
-
-- `runtime.log`、`_diag*.txt`、`build_out*.txt`
-- `obj/` 和本机构建缓存
-- 包含用户名、PID、绝对路径、账号信息或测试日志的文件
-- 没有再分发权限的游戏资源和第三方依赖
 
 ## 许可证与免责声明
 
