@@ -156,7 +156,7 @@ tools/DickInjector/
 ![驱动保护过检测示意图](docs/images/驱动保护过检测.png)
 
 5. 运行 `Dick.exe`，选择目标 Mono 进程和 `Vape.dll`。
-
+Vape.dll产物地址：https://github.com/mahuilai/SSJJ-VapeV4/blob/main/bin/Release/Vape.dll
 ![注入器配置页面示意图](docs/images/注入器配置页面.png)
 
 6. 使用以下入口配置：
