@@ -6,7 +6,6 @@
 
 ## 预览图
 
-截图来自 `C:\Users\Mahuilai\Pictures\Screenshots`，已复制到 `docs/images/`，文件名保持不变。
 
 ### 驱动保护过检测
 
