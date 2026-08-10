@@ -14,6 +14,13 @@ namespace Vape.Cfg
         private static readonly FieldInfo[] Fields = typeof(Config).GetFields(BindingFlags.Public | BindingFlags.Static);
         private static readonly Dictionary<string, FieldInfo> FieldMap = BuildFieldMap();
         private static readonly StringBuilder SharedBuilder = new StringBuilder(2048);
+        private static string _lastPersistedPayload = string.Empty;
+        private static string _autoSaveProfile = string.Empty;
+        private static float _nextAutoSaveCheck;
+
+        public static string LastStatus { get; private set; } = "Ready";
+        public static bool LastOperationSucceeded { get; private set; } = true;
+        public static string ConfigDirectoryPath => ConfigDirectory;
 
         private static Dictionary<string, FieldInfo> BuildFieldMap()
         {
@@ -26,6 +33,37 @@ namespace Vape.Cfg
         private static string GetConfigPath(string configName)
         {
             return Path.Combine(ConfigDirectory, configName);
+        }
+
+        public static bool TryNormalizeConfigName(string configName, out string normalized)
+        {
+            normalized = (configName ?? string.Empty).Trim();
+            if (normalized.Length == 0 || normalized.Length > 64 || normalized == "." || normalized == ".." ||
+                normalized.EndsWith(".", StringComparison.Ordinal) ||
+                !string.Equals(Path.GetFileName(normalized), normalized, StringComparison.Ordinal))
+            {
+                SetStatus(false, "Invalid profile name");
+                return false;
+            }
+
+            char[] invalid = Path.GetInvalidFileNameChars();
+            if (normalized.IndexOfAny(invalid) >= 0)
+            {
+                SetStatus(false, "Invalid profile name");
+                return false;
+            }
+
+            string stem = normalized.Split('.')[0].ToUpperInvariant();
+            string[] reserved = { "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
+            for (int i = 0; i < reserved.Length; i++)
+            {
+                if (stem == reserved[i])
+                {
+                    SetStatus(false, "Reserved profile name");
+                    return false;
+                }
+            }
+            return true;
         }
 
         public static void EnsureDirectory()
@@ -51,8 +89,6 @@ namespace Vape.Cfg
             string[] lines = payload.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string line in lines)
                 ApplyLine(line);
-            if (Config.HistoryWindow <= 0)
-                Config.HistoryWindow = 200;
         }
 
         public static void ApplyLine(string line)
@@ -80,70 +116,118 @@ namespace Vape.Cfg
             }
         }
 
-        public static void SaveConfig(string configName)
+        public static bool SaveConfig(string configName)
         {
+            if (!TryNormalizeConfigName(configName, out string normalized))
+                return false;
+
             try
             {
                 EnsureDirectory();
-                string configPath = GetConfigPath(configName);
-                File.WriteAllText(configPath, ExportToString(), Encoding.UTF8);
+                string payload = ExportToString();
+                WriteAtomically(GetConfigPath(normalized), payload);
+                _lastPersistedPayload = payload;
+                _autoSaveProfile = normalized;
+                SetStatus(true, "Saved: " + normalized);
 #if Debug_Log
-                global::System.Console.WriteLine($"[Vape.Cfg] saved: {configPath}");
+                global::System.Console.WriteLine($"[Vape.Cfg] saved: {GetConfigPath(normalized)}");
 #endif
+                return true;
             }
             catch (Exception ex)
             {
+                SetStatus(false, "Save failed: " + ex.Message);
 #if Debug_Log
                 global::System.Console.WriteLine($"[Vape.Cfg] save fail: {ex.Message}");
-#else
-                _ = ex;
 #endif
+                return false;
             }
         }
 
-        public static void LoadConfig(string configName)
+        public static bool LoadConfig(string configName)
         {
+            if (!TryNormalizeConfigName(configName, out string normalized))
+                return false;
+
             try
             {
-                string configPath = GetConfigPath(configName);
+                string configPath = GetConfigPath(normalized);
                 if (!File.Exists(configPath))
                 {
+                    SetStatus(false, "Profile not found: " + normalized);
 #if Debug_Log
-                    global::System.Console.WriteLine($"[Vape.Cfg] missing: {configName}");
+                    global::System.Console.WriteLine($"[Vape.Cfg] missing: {normalized}");
 #endif
-                    return;
+                    return false;
                 }
 
                 ImportFromString(File.ReadAllText(configPath, Encoding.UTF8));
+                _lastPersistedPayload = ExportToString();
+                _autoSaveProfile = normalized;
+                SetStatus(true, "Loaded: " + normalized);
 #if Debug_Log
-                global::System.Console.WriteLine($"[Vape.Cfg] loaded: {configName}");
+                global::System.Console.WriteLine($"[Vape.Cfg] loaded: {normalized}");
 #endif
+                return true;
             }
             catch (Exception ex)
             {
+                SetStatus(false, "Load failed: " + ex.Message);
 #if Debug_Log
                 global::System.Console.WriteLine($"[Vape.Cfg] load fail: {ex.Message}");
-#else
-                _ = ex;
 #endif
+                return false;
             }
         }
 
-        public static void DeleteConfig(string configName)
+        public static bool DeleteConfig(string configName)
         {
+            if (!TryNormalizeConfigName(configName, out string normalized))
+                return false;
+
             try
             {
-                string configPath = GetConfigPath(configName);
+                string configPath = GetConfigPath(normalized);
                 if (File.Exists(configPath))
                     File.Delete(configPath);
+                SetStatus(true, "Deleted: " + normalized);
+                return true;
             }
             catch (Exception ex)
             {
+                SetStatus(false, "Delete failed: " + ex.Message);
 #if Debug_Log
                 global::System.Console.WriteLine($"[Vape.Cfg] delete fail: {ex.Message}");
-#else
-                _ = ex;
 #endif
+                return false;
+            }
+        }
+
+        public static void UpdateAutoSave(string configName)
+        {
+            if (Time.unscaledTime < _nextAutoSaveCheck)
+                return;
+            _nextAutoSaveCheck = Time.unscaledTime + 0.8f;
+
+            if (!TryNormalizeConfigName(configName, out string normalized))
+                return;
+
+            string payload = ExportToString();
+            if (string.Equals(_autoSaveProfile, normalized, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(_lastPersistedPayload, payload, StringComparison.Ordinal))
+                return;
+
+            try
+            {
+                EnsureDirectory();
+                WriteAtomically(GetConfigPath(normalized), payload);
+                _autoSaveProfile = normalized;
+                _lastPersistedPayload = payload;
+                SetStatus(true, "Autosaved: " + normalized);
+            }
+            catch (Exception ex)
+            {
+                SetStatus(false, "Autosave failed: " + ex.Message);
             }
         }
 
@@ -153,15 +237,61 @@ namespace Vape.Cfg
             {
                 EnsureDirectory();
                 string[] files = Directory.GetFiles(ConfigDirectory);
-                var names = new string[files.Length];
+                var names = new List<string>(files.Length);
                 for (int i = 0; i < files.Length; i++)
-                    names[i] = Path.GetFileName(files[i]);
-                return names;
+                {
+                    string name = Path.GetFileName(files[i]);
+                    if (name.EndsWith(".tmp", StringComparison.OrdinalIgnoreCase) ||
+                        name.EndsWith(".bak", StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    names.Add(name);
+                }
+                names.Sort(StringComparer.OrdinalIgnoreCase);
+                return names.ToArray();
             }
-            catch
+            catch (Exception ex)
             {
+                SetStatus(false, "Profile scan failed: " + ex.Message);
                 return Array.Empty<string>();
             }
+        }
+
+        private static void WriteAtomically(string configPath, string payload)
+        {
+            string tempPath = configPath + ".tmp";
+            try
+            {
+                File.WriteAllText(tempPath, payload, Encoding.UTF8);
+                if (!File.Exists(configPath))
+                {
+                    File.Move(tempPath, configPath);
+                    return;
+                }
+
+                try
+                {
+                    File.Replace(tempPath, configPath, null);
+                }
+                catch (PlatformNotSupportedException)
+                {
+                    File.Copy(tempPath, configPath, true);
+                }
+                catch (IOException)
+                {
+                    File.Copy(tempPath, configPath, true);
+                }
+            }
+            finally
+            {
+                if (File.Exists(tempPath))
+                    File.Delete(tempPath);
+            }
+        }
+
+        private static void SetStatus(bool success, string status)
+        {
+            LastOperationSucceeded = success;
+            LastStatus = status ?? string.Empty;
         }
 
         public static string SerializeValue(object value)

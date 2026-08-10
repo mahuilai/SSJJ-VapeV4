@@ -1,0 +1,1 @@
+using System; using System.IO; namespace Vape { public static class VapeDebug { public static void Log(string msg) { try { File.AppendAllText(@"D:\Vape_Debug.txt", $"[{DateTime.Now:HH:mm:ss}] {msg}\n"); } catch {} } } }

@@ -1,146 +1,200 @@
 # SSJJ_Vape
 
-面向 **生死狙击（Unity/Mono）** 的研究用注入模块。提供可拖拽多窗口 ClickGUI、ESP/辅助视觉、自瞄与配置系统。
+面向 Unity/Mono 测试环境的研究用模块，包含 HUD、ClickGUI、配置系统和若干运行时实验功能。
 
-> 仅供学习、研究与**授权环境**测试。请遵守当地法律与游戏服务条款。
+本仓库只适用于你拥有或明确获准测试的程序。请勿用于未授权的线上游戏、绕过安全产品或破坏公平竞赛。使用前请确认所有第三方代码、游戏程序集、字体、音效和图片都具备合法的再分发权限。
 
----
+## 预览图
 
-## 预览
+截图来自 `C:\Users\Mahuilai\Pictures\Screenshots`，已复制到 `docs/images/`，文件名保持不变。
 
-### 使用示意图（游戏内菜单）
+### 菜单GUI卡片.png
 
-![使用示意图](docs/images/menu-preview.jpg)
+![菜单GUI卡片.png](docs/images/菜单GUI卡片.png)
 
-### 注入截图（SharpMonoInjector）
+### 驱动保护过检测.png
 
-![注入截图](docs/images/inject-demo.png)
+![驱动保护过检测.png](docs/images/驱动保护过检测.png)
 
----
+### 图片、音效资源调用.png
+
+![图片、音效资源调用.png](docs/images/图片、音效资源调用.png)
+
+### 注入器配置页面.png
+
+![注入器配置页面.png](docs/images/注入器配置页面.png)
+
+### CSGO风格击杀图标.png
+
+![CSGO风格击杀图标.png](docs/images/CSGO风格击杀图标.png)
+
+### CSGO风格HUD.png
+
+![CSGO风格HUD.png](docs/images/CSGO风格HUD.png)
+
+### Esc游戏设置HUD.png
+
+![Esc游戏设置HUD.png](docs/images/Esc游戏设置HUD.png)
+
+### CSGO_HUD 功能示例（图一）
+
+![CSGO_HUD功能示例.png](docs/images/CSGO_HUD功能示例.png)
 
 ## 功能概览
 
-| 分类 | 内容 |
-| --- | --- |
-| **UI** | 多窗口 ClickGUI、自定义开关/滑条/分段控件，热键 **F12** |
-| **Vision** | ESP 方框/骨骼/血条/名字/距离、雷达、物品/Buff 标签、观战列表等 |
-| **Offense** | Soft Aim、Hard Aim、Auto Fire、History Hit、Desync、Packet Hold |
-| **Motion** | Auto Hop、Air Path、Orbit Cam、FOV |
-| **Misc** | Recoil Strip、换肤入口、配置存取、画质/帧率快捷项 |
-| **Overlay** | 可选外部 DX11 + ImGui 菜单（`Overlay/Vape.Overlay`） |
-
----
-
-## 环境要求
-
-- 游戏客户端：生死狙击微端（Unity Mono）
-- 构建：Visual Studio / MSBuild，**.NET Framework 4.8**，`Release | x64`
-- 注入器：[SharpMonoInjector 2.7 - TheHolyOneZ Edition](https://github.com/TheHolyOneZ/SharpMonoInjector-2.7-TheHolyOneZ-Edition-)
-- 可选 Overlay：需安装 **.NET 10** 运行时
-
----
-
-## 构建
-
-```bash
-# 游戏模块
-dotnet msbuild Vape.csproj -p:Configuration=Release -p:Platform=x64
-
-# 可选：外部 ImGui 菜单
-dotnet build Overlay/Vape.Overlay.csproj -c Release
-```
-
-输出：
-
-- `bin/x64/Release/Vape.dll`
-- `Overlay/bin/Release/net10.0-windows/Vape.Overlay.exe`（可选）
-
-### 关于 `依赖/` 目录
-
-编译所需的游戏/引擎程序集位于仓库根目录 **`依赖/`**（由原 `引用/` 重命名）。`Vape.csproj` 的 HintPath 已指向该目录。
-
-同时仓库跟踪 **`bin/`**、**`obj/`** 构建产物，便于直接取用 `bin/x64/Release/Vape.dll`。
-
----
-
-## 注入步骤
-
-1. 启动生死狙击并进入可战斗场景（或大厅，视你的测试需求）。
-2. 以管理员身份打开 [SharpMonoInjector-2.7-TheHolyOneZ-Edition](https://github.com/TheHolyOneZ/SharpMonoInjector-2.7-TheHolyOneZ-Edition-)。
-3. 选择进程（游戏进程）。
-4. Assembly 选择编译好的 `Vape.dll`。
-5. 填写：
-   - **Namespace**: `Vape` 或短入口 `t`
-   - **Class**: `Loader` 或 `u`
-   - **Method**: `Load` 或 `i`
-6. 点击 Inject。成功后可用 **F12** 开关菜单。
-
-推荐入口：
-
-| 项 | 值 |
-| --- | --- |
-| Namespace | `Vape` |
-| Class | `Loader` |
-| Method | `Load` |
-
-兼容短入口：`t.u.i()`。
-
-参考注入界面：
-
-![注入截图](docs/images/inject-demo.png)
-
----
-
-## 操作说明
-
-| 按键 | 作用 |
-| --- | --- |
-| **F12** | 打开 / 关闭菜单 |
-| 菜单内 Chip | 开关各分类窗口（ATK / VIS / MOV / UTIL / COS / CFG） |
-| 配置页 | 保存 / 加载 / 删除配置（目录：`persistentDataPath/VapeConfigs`） |
-
-可选：注入后启动 `Vape.Overlay.exe`，外部 ImGui 菜单会通过共享内存与游戏内配置同步；连接成功时进程内菜单会自动让路。
-
----
+- 卡片式 ClickGUI、中文界面和配置保存/加载
+- CSGO 风格 HUD：雷达、计分板、击杀提示、武器栏、状态信息和游戏设置页
+- 视觉模块：ESP、骨骼、血条、名字、距离、物品和 Buff 标签
+- 输入与移动实验模块、反冲处理、即时开镜等功能
+- 回溯模块已从当前版本完整移除
 
 ## 项目结构
 
 ```text
-Vape/
-├── Cfg/            配置、菜单
-├── UI/             Theme、Widgets、Overlay 同步
-├── Feature/        功能实现（Legit / Rage / Visuals ...）
-├── Entity/         玩家实体同步
-├── Render/         立即模式绘制
-├── MonoMod_Hook/   本地方法 Hook
-├── Overlay/        外部 DX11 ImGui 菜单
-├── Resources/      字体等嵌入资源
-├── docs/images/    README 配图
+SSJJ_Vape/
+├── Cfg/                         配置和菜单逻辑
+├── Console/                     运行时控制台
+├── Core/                        Hook 与方法处理核心
+├── Entity/                      玩家实体同步
+├── Feature/                     HUD、视觉和功能模块
+├── UI/                          主题、控件和卡片菜单
+├── Render/                      立即模式绘制
+├── Resources/                   嵌入字体和项目资源
+├── 依赖/                        编译所需的游戏/Unity 程序集
+├── CSGO_HUD/                    运行时从桌面读取的外部图片和音效
+├── tools/DickInjector/          Dick.exe 与 Dick.Core.dll
+├── docs/images/                 README 预览图
+├── 底层组件/                    可选的 C/C++ 原生研究工程
+├── bin/Release/                 Release 输出
+├── bin/x64/Release/             Release x64 输出
 ├── Vape.csproj
 └── Vape.sln
 ```
 
----
+## 环境要求
 
-## 注入器
+- Windows x64
+- Visual Studio / MSBuild
+- .NET Framework 4.8 Developer Pack
+- Unity Mono 测试目标
+- 构建时保留仓库根目录的 `依赖/` 目录
 
-本项目推荐使用：
+## 构建
 
-**[TheHolyOneZ/SharpMonoInjector-2.7-TheHolyOneZ-Edition-](https://github.com/TheHolyOneZ/SharpMonoInjector-2.7-TheHolyOneZ-Edition-)**
+仓库保留依赖和 Release 输出，直接使用下面的命令可以重新构建 x64 版本：
 
-SharpMonoInjector 可用于将 .NET 程序集注入到使用 Mono 运行时的 Unity 进程。
+```powershell
+dotnet msbuild Vape.csproj -t:Rebuild -p:Configuration=Release -p:Platform=x64
+```
 
----
+输出文件：
 
-## 免责声明
+- `bin/x64/Release/Vape.dll`
+- `bin/Release/Vape.dll`
 
-- 本仓库仅用于技术研究与教育目的。
-- 作者不对使用本软件造成的任何账号处罚、损失或法律后果负责。
-- 请勿在未授权的线上环境使用。
-- 禁止将本项目用于任何商业或破坏公平竞赛的用途。
+不要删除 `依赖/`。`Vape.csproj` 的引用路径已经指向该目录。`obj/`、`底层组件/build/` 和 `底层组件/dist/` 属于本机构建中间产物，不是手动使用托管 DLL 所需的内容。
 
----
+## CSGO_HUD 外部资源
 
-## License
+`CsgoHud` 会从当前用户桌面读取固定目录：
 
-未另行声明时，保留所有权利。二次分发请自担合规风险，并移除任何你无权分发的第三方/游戏文件。
+```text
+C:\Users\<用户名>\Desktop\CSGO_HUD\
+```
+
+桌面目录示例（图二）：
+
+![CSGO_HUD 桌面目录示例](docs/images/CSGO_HUD桌面目录示例.png)
+
+因此，运行测试前请把仓库里的 `CSGO_HUD/` 整个文件夹复制到桌面，目录名和文件名都不要改。当前目录包含：
+
+- `profile_avatar.jpg`
+- `player_avatar_1.png`、`player_avatar_2.png`、`player_avatar_3.png`
+- `kill_card_1_spade.png`、`kill_card_2_joker.png`、`kill_card_3_thunder.png`、`kill_card_4_death.png`
+- `kill_spade_skull.png`
+- `kill_glass.wav`、`kill_glass.ogg`
+- `menu_font.ttf`、`ProggyTiny.ttf`
+
+资源缺失时 HUD 仍可启动，但头像、击杀卡片、音效或字体会回退到简化显示。
+
+## Dick 注入器
+
+仓库中的注入器发布目录是：
+
+```text
+tools/DickInjector/
+├── Dick.exe
+├── Dick.Core.dll
+└── THIRD_PARTY_LICENSE.txt
+```
+
+`Dick.exe` 和 `Dick.Core.dll` 必须放在同一个目录。图三中的 `runtime.log` 是本机运行日志，包含进程名、PID、时间和运行记录，不随项目发布。
+
+注入器目录示例（图三）：
+
+![Dick 注入器目录示例](docs/images/Dick注入器目录示例.png)
+
+### 授权测试教程
+
+以下流程只适用于你拥有或明确获准测试的 Unity/Mono 程序：
+
+1. 将 `tools/DickInjector/` 复制到桌面，例如 `C:\Users\Mahuilai\Desktop\SharpMonoInjector\`。
+2. 确认 `Dick.exe` 与 `Dick.Core.dll` 位于同一层目录。
+3. 将 `CSGO_HUD/` 复制到桌面，并准备好 `bin/x64/Release/Vape.dll`。
+4. 启动你自己的 Unity/Mono 测试程序，并进入允许加载测试模块的场景。
+5. 运行 `Dick.exe`，选择目标 Mono 进程和 `Vape.dll`。
+6. 使用以下入口配置：
+
+   | 项目 | 值 |
+   | --- | --- |
+   | Namespace | `Vape` |
+   | Class | `Loader` |
+   | Method | `Load` |
+
+7. 执行加载后，按模块自身的入口约定验证结果。出现异常时先查看注入器日志和 Unity 日志，不要把包含 PID、路径或账号信息的日志提交到仓库。
+
+不要在未授权的线上环境使用，也不要把“隐匿”“绕过检测”类选项当作正常发布流程的一部分。
+
+### 下载地址
+
+项目源码：
+
+- https://github.com/BaoAn520/SSJJ_Vape
+
+仓库文件直链（文件推送到 `main` 分支后可用）：
+
+- `Dick.exe`：https://github.com/BaoAn520/SSJJ_Vape/raw/refs/heads/main/tools/DickInjector/Dick.exe
+- `Dick.Core.dll`：https://github.com/BaoAn520/SSJJ_Vape/raw/refs/heads/main/tools/DickInjector/Dick.Core.dll
+
+上游项目源码与许可证：
+
+- https://github.com/TheHolyOneZ/SharpMonoInjector-2.7-TheHolyOneZ-Edition-
+
+本仓库仅保留了用于发布的两个文件和上游许可证副本。发布前请再次核对上游项目的许可证、二进制再分发条款以及你对修改版文件的发布权限。
+
+## 发布清单
+
+开源压缩包至少应包含：
+
+- 源码目录和 `Vape.csproj`
+- `依赖/`
+- `bin/Release/` 和 `bin/x64/Release/`
+- `CSGO_HUD/`
+- `docs/images/`
+- `tools/DickInjector/Dick.exe`
+- `tools/DickInjector/Dick.Core.dll`
+- `tools/DickInjector/THIRD_PARTY_LICENSE.txt`
+- 本 README
+
+不要提交：
+
+- `runtime.log`、`_diag*.txt`、`build_out*.txt`
+- `obj/` 和本机构建缓存
+- 包含用户名、PID、绝对路径、账号信息或测试日志的文件
+- 没有再分发权限的游戏资源和第三方依赖
+
+## 许可证与免责声明
+
+当前仓库没有为所有内容授予统一许可证。项目源码、游戏程序集、资源文件、`Dick` 注入器及其他第三方组件的版权和许可范围可能不同；发布者应在公开仓库前分别确认授权，并在必要时替换或补充许可证文件。
+
+本项目仅用于授权环境中的软件工程研究、Unity/Mono 调试和安全研究。使用者自行承担违反法律、软件许可、服务条款或造成数据损失的责任。

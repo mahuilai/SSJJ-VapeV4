@@ -38,6 +38,9 @@ namespace Vape
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool SetConsoleCP(uint wCodePageID);
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool SetConsoleTextAttribute(IntPtr hConsoleOutput, ushort wAttributes);
+
         private const int STD_OUTPUT_HANDLE = -11;
         private const int SW_SHOW = 5;
         private const int SW_HIDE = 0;
@@ -72,7 +75,7 @@ namespace Vape
                 SetConsoleCP(CP_UTF8);
                 global::System.Console.OutputEncoding = new UTF8Encoding(false);
                 global::System.Console.InputEncoding = new UTF8Encoding(false);
-                SetConsoleTitle("Vape");
+                SetConsoleTitle("Vape驱动保护");
 
                 IntPtr stdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
                 if (stdHandle == IntPtr.Zero || stdHandle == new IntPtr(-1))
@@ -94,6 +97,26 @@ namespace Vape
 
                 global::System.Console.WriteLine($"启动时间: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
             }
+#endif
+        }
+
+        public static void WriteColoredNotice()
+        {
+#if Debug_Log
+            IntPtr stdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+            if (stdHandle == IntPtr.Zero || stdHandle == new IntPtr(-1)) return;
+
+            // 粉红色 (FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY)
+            SetConsoleTextAttribute(stdHandle, 0x0D);
+            global::System.Console.Write("驱动级过检测已加载...");
+
+            // 红色 (FOREGROUND_RED | FOREGROUND_INTENSITY)
+            SetConsoleTextAttribute(stdHandle, 0x0C);
+            global::System.Console.Write("请勿关闭");
+
+            // 恢复默认颜色 (灰色)
+            SetConsoleTextAttribute(stdHandle, 0x07);
+            global::System.Console.WriteLine();
 #endif
         }
 

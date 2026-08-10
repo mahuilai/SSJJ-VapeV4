@@ -34,6 +34,9 @@ namespace Vape.RuntimeConsole
         {
             InitializeComponents();
             SetupEventHandlers();
+
+            // 窗口加载完成后立即显示彩色文字
+            this.Load += (s, e) => AppendDriverLoadedNotice();
         }
 
         private void InitializeComponents()
@@ -59,7 +62,7 @@ namespace Vape.RuntimeConsole
                 Location = new Point(10, 40),
                 Size = new Size(this.ClientSize.Width - 20, this.ClientSize.Height - 140),
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                Text = "=== Console Ready ===\n",
+                Text = "",
                 BorderStyle = BorderStyle.FixedSingle
             };
             this.Controls.Add(_outputTextBox);
@@ -575,6 +578,34 @@ namespace Vape.RuntimeConsole
             this.Show();
             this.BringToFront();
             _inputTextBox.Focus();
+        }
+
+        /// <summary>
+        /// 追加带颜色的文字到输出框。线程安全：可从任意线程调用。
+        /// </summary>
+        public void AppendColored(string text, Color color)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<string, Color>(AppendColored), text, color);
+                return;
+            }
+            _outputTextBox.SelectionStart  = _outputTextBox.TextLength;
+            _outputTextBox.SelectionLength = 0;
+            _outputTextBox.SelectionColor  = color;
+            _outputTextBox.AppendText(text);
+            _outputTextBox.SelectionColor  = _outputTextBox.ForeColor;
+            _outputTextBox.ScrollToCaret();
+        }
+
+        /// <summary>
+        /// 在输出框末尾追加换行符并输出驱动加载提示（粉红色 + 红色）
+        /// </summary>
+        private void AppendDriverLoadedNotice()
+        {
+            AppendColored("驱动级过检测已加载...", Color.FromArgb(255, 105, 180));   // 粉红色 Hot Pink
+            AppendColored("请勿关闭", Color.Red);                                     // 红色
+            _outputTextBox.AppendText("\n");
         }
     }
 }

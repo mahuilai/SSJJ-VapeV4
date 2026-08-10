@@ -1,7 +1,7 @@
-using NetData;
+﻿using NetData;
 using Vape.Cfg;
 using Vape.Entity;
-using Vape.Feature.Legit;
+using Vape.Feature.Precision;
 using System.Collections.Generic;
 using UnityEngine;
 

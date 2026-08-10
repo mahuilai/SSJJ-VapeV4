@@ -37,6 +37,7 @@ namespace Vape
 
 #if Debug_Log
                 global::System.Console.WriteLine($"[Vape] bootstrap ok，ID: {_hookObject.GetInstanceID()}");
+                ConsoleManager.WriteColoredNotice();
 #endif
             }
             catch (System.Exception ex)

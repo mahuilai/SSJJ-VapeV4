@@ -9,5 +9,15 @@ TestResults/
 *.Cache
 *.log
 
-# Keep build outputs and game deps in repo (per project policy)
-# bin/, obj/, 依赖/ are tracked
+# Published build outputs and game dependencies are intentionally kept.
+# Ignore local intermediates and machine-specific diagnostics.
+obj/
+bin/Debug/
+bin/x64/Debug/
+底层组件/build/
+底层组件/dist/
+_diag*.txt
+build_out*.txt
+
+# Local reverse-engineering worktrees are not part of the public release.
+research/

@@ -1,4 +1,4 @@
-using Assets.Sources.Chat;
+﻿using Assets.Sources.Chat;
 using Assets.Sources.Framework;
 using Assets.Sources.Framework.System;
 using Assets.Sources.Modules.Ui.Chat;
@@ -78,6 +78,7 @@ namespace Vape.Feature
         private void OnHitCallback(NetData.GameServerSetupData data)
         {
             SendLocalMessage(MessageType.System, "", "命中目标");
+            Vape.Feature.Overlay.ChatHudStyler.NotifyHitMessage();
         }
 
         // 自动喊话

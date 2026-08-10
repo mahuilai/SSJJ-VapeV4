@@ -1,4 +1,4 @@
-using Vape.Cfg;
+﻿using Vape.Cfg;
 using Vape.UI;
 using System;
 using System.Collections.Generic;
@@ -8,32 +8,42 @@ public static class Configs
 {
     public static string Current = "default";
     public static List<string> Names = new List<string>();
+    private static bool _initialized;
+    public static string LastStatus => ConfigManager.LastStatus;
+    public static bool LastOperationSucceeded => ConfigManager.LastOperationSucceeded;
 
-    public static void Save(string name)
+    public static bool Save(string name)
     {
-        if (string.IsNullOrEmpty(name)) return;
-        ConfigManager.SaveConfig(name);
-        if (!Names.Contains(name)) Names.Add(name);
-        Current = name;
+        if (!ConfigManager.TryNormalizeConfigName(name, out string normalized)) return false;
+        if (!ConfigManager.SaveConfig(normalized)) return false;
+        if (!Names.Contains(normalized)) Names.Add(normalized);
+        Names.Sort(StringComparer.OrdinalIgnoreCase);
+        Current = normalized;
+        return true;
     }
 
-    public static void Load(string name)
+    public static bool Load(string name)
     {
-        if (string.IsNullOrEmpty(name)) return;
-        ConfigManager.LoadConfig(name);
-        Current = name;
+        if (!ConfigManager.TryNormalizeConfigName(name, out string normalized)) return false;
+        if (!ConfigManager.LoadConfig(normalized)) return false;
+        Current = normalized;
+        return true;
     }
 
-    public static void Delete(string name)
+    public static bool Delete(string name)
     {
-        if (name == "default" || !Names.Contains(name)) return;
-        ConfigManager.DeleteConfig(name);
-        Names.Remove(name);
-        if (Current == name) Current = "default";
+        if (!ConfigManager.TryNormalizeConfigName(name, out string normalized) ||
+            normalized == "default" || !Names.Contains(normalized)) return false;
+        if (!ConfigManager.DeleteConfig(normalized)) return false;
+        Names.Remove(normalized);
+        if (Current == normalized) Current = "default";
+        return true;
     }
 
     public static void Init()
     {
+        if (_initialized) return;
+        _initialized = true;
         string[] saved = ConfigManager.GetAllConfigNames();
         Names = new List<string>(saved);
         if (!Names.Contains("default"))
@@ -42,6 +52,12 @@ public static class Configs
             ConfigManager.SaveConfig("default");
         }
         ConfigManager.LoadConfig("default");
+    }
+
+    public static void UpdateAutoSave()
+    {
+        if (!_initialized) return;
+        ConfigManager.UpdateAutoSave(Current);
     }
 }
 
@@ -116,7 +132,8 @@ namespace Vape.Features
                 useGUILayout = IsOpen;
             }
             if (Input.GetKeyDown(Config.OrbitKey)) forceThirdPerson = !forceThirdPerson;
-            if (Input.GetKeyDown(Config.AirPathKey)) Config.AirPath = !Config.AirPath;
+            Vape.Feature.SpeedBoost.UpdateHotkey();
+            Configs.UpdateAutoSave();
             if (_toastOn && Time.time - _toastAt > 2.2f) _toastOn = false;
             if (_bindWait) PollBind();
         }
@@ -147,13 +164,14 @@ namespace Vape.Features
                 case "Hard": Config.HardAimKey = k; break;
                 case "Fix": Config.AngleFixKey = k; break;
                 case "Orbit": Config.OrbitKey = k; break;
-                case "Air": Config.AirPathKey = k; break;
+                case "Bhop": Config.BhopKey = k; break;
+                case "Boost": Config.SpeedBoostKey = k; break;
+                case "Blink": Config.BlinkMoveKey = k; break;
             }
         }
 
         private void OnGUI()
         {
-            if (Vape.UI.OverlayHost.ExternalUiActive) return;
             if (!IsOpen) return;
             Widgets.BeginFrame();
             UiDraw.Ensure();
@@ -258,7 +276,9 @@ namespace Vape.Features
             if (GUI.Button(cancel, GUIContent.none, GUIStyle.none)) { _confirmDel = false; _delCfg = ""; }
             if (GUI.Button(remove, GUIContent.none, GUIStyle.none))
             {
-                Configs.Delete(_delCfg); _confirmDel = false; _delCfg = ""; Toast("Profile removed");
+                bool deleted = Configs.Delete(_delCfg);
+                _confirmDel = false; _delCfg = "";
+                Toast(deleted ? "Profile removed" : Configs.LastStatus);
             }
             GUI.DragWindow(new Rect(0, 0, 1000, 20));
         }
@@ -308,7 +328,6 @@ namespace Vape.Features
                 Toggle(ref Config.SoftAimVisCheck, "Visibility Gate");
                 Toggle(ref Config.SoftAimLine, "Lock Beam");
                 Bind("Soft", "Activation", Config.SoftAimKey);
-                if (Config.SoftAim) Toggle(ref Config.HistoryAutoShoot, "History Auto Shot");
             });
             if (Config.SoftAim)
             {
@@ -333,17 +352,6 @@ namespace Vape.Features
                 }
             });
 
-            Section("History Hit");
-            Card(() =>
-            {
-                Toggle(ref Config.HistoryHit, "History Hit");
-                if (!Config.HistoryHit) return;
-                SliderI("Window", ref Config.HistoryWindow, 0, 5000, "ms");
-                Toggle(ref Config.HistoryPreferLive, "Prefer Live Body");
-                Toggle(ref Config.HistoryNoWall, "Skip Wall Ghost");
-                Toggle(ref Config.HistoryTrail, "Trail Ghosts");
-            });
-
             Section("Angle / Desync");
             Card(() =>
             {
@@ -351,8 +359,6 @@ namespace Vape.Features
                 Toggle(ref Config.AngleFixRandom, "Randomize");
                 Bind("Fix", "Force Fix", Config.AngleFixKey);
                 Toggle(ref Config.Desync, "Desync");
-                Toggle(ref Config.PacketHold, "Packet Hold");
-                if (Config.PacketHold) SliderI("Ticks", ref Config.PacketHoldTicks, 0, 100);
             });
 
             if (Config.Desync)
@@ -437,6 +443,13 @@ namespace Vape.Features
                 Toggle(ref Config.FieldTags, "Field Tags");
                 Toggle(ref Config.LootTags, "Loot Tags");
                 Toggle(ref Config.LootGlow, "Loot Glow");
+                Toggle(ref Config.PhysxModel, "Unity PhysX Model");
+                if (Config.PhysxModel)
+                {
+                    Toggle(ref Config.PhysxBlackMap, "Black Map + No Skybox");
+                    SliderF("PhysX Range", ref Config.PhysxModelDistance, 30f, 250f, "F0");
+                    GUILayout.Label("PhysX " + Vape.Feature.Overlay.PhysxModelDisplay.LastStatus);
+                }
             });
 
             Section("Interface");
@@ -445,6 +458,8 @@ namespace Vape.Features
                 Toggle(ref Config.ObserverPanel, "Observers");
                 Toggle(ref Config.MiniMap, "Radar");
                 Toggle(ref Config.VelocityRing, "Velocity Ring");
+                Toggle(ref Config.KeyHud, "Input HUD");
+                Toggle(ref Config.CsgoHud, "CS2 HUD");
                 Toggle(ref Config.StateStrip, "State Strip");
             });
         }
@@ -457,18 +472,36 @@ namespace Vape.Features
                 Toggle(ref Config.OrbitCam, "Orbit Cam");
                 Bind("Orbit", "Orbit Key", Config.OrbitKey);
                 Toggle(ref Config.LensCustom, "Custom Lens");
-                SliderI("Orbit FOV", ref Config.OrbitFov, 0, 150);
-                SliderF("Lens FOV", ref Config.LensFov, 0, 150, "F0");
+                SliderI("Orbit FOV", ref Config.OrbitFov, 30, 150);
+                SliderF("Lens FOV", ref Config.LensFov, 30, 150, "F0");
             });
 
             Section("Traversal");
             Card(() =>
             {
-                Toggle(ref Config.AutoHop, "Auto Hop");
-                Toggle(ref Config.AirPath, "Air Path");
+                Toggle(ref Config.Bhop8Dir, "8-Dir Bhop");
+                if (Config.Bhop8Dir)
+                {
+                    Config.BhopActivationMode = Widgets.Segment(
+                        "bhop_mode", Config.BhopActivationMode, new[] { "Hold", "Toggle" });
+                    Bind("Bhop", "Bhop Key", Config.BhopKey);
+                }
                 Toggle(ref Config.Airglide, "Airglide");
-                Bind("Air", "Air Key", Config.AirPathKey);
                 Toggle(ref Config.GhostStep, "Ghost Step");
+                Toggle(ref Config.BlinkMove, "Freecam");
+                if (Config.BlinkMove)
+                {
+                    Bind("Blink", "Freecam Key", Config.BlinkMoveKey);
+                    SliderF("Freecam Speed", ref Config.BlinkSpeedMultiplier, 1f, 4f);
+                    GUILayout.Label($"Freecam {Vape.Feature.BlinkMovement.LastStatus}");
+                }
+                Toggle(ref Config.SpeedBoost, "Speed Boost");
+                if (Config.SpeedBoost)
+                {
+                    Bind("Boost", "Boost Key", Config.SpeedBoostKey);
+                    SliderF("Multiplier", ref Config.SpeedBoostMultiplier, 1f, 30f, "F1");
+                    GUILayout.Label($"Boost {Vape.Feature.SpeedBoost.LastStatus}");
+                }
             });
         }
 
@@ -564,7 +597,9 @@ namespace Vape.Features
                 _newCfg = Widgets.TextField("Name", _newCfg);
                 if (Widgets.Button("Save Profile") && !string.IsNullOrEmpty(_newCfg))
                 {
-                    Configs.Save(_newCfg); Toast("Saved " + _newCfg); _newCfg = "";
+                    bool saved = Configs.Save(_newCfg);
+                    Toast(saved ? "Saved " + Configs.Current : Configs.LastStatus);
+                    if (saved) _newCfg = "";
                 }
                 GUILayout.EndHorizontal();
             });
@@ -578,12 +613,13 @@ namespace Vape.Features
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(c, UiDraw.Label, GUILayout.Width(90));
                     if (Widgets.Button("Load"))
-                    { Configs.Load(c); Toast("Loaded " + c); }
+                    { Toast(Configs.Load(c) ? "Loaded " + c : Configs.LastStatus); }
                     if (c != "default" && Widgets.Button("Delete"))
                     { _delCfg = c; _confirmDel = true; }
                     GUILayout.EndHorizontal();
                 }
                 GUILayout.EndScrollView();
+                GUILayout.Label(Configs.LastStatus, UiDraw.Label);
             });
         }
     }

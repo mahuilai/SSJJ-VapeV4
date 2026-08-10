@@ -4,6 +4,10 @@ namespace Vape.Cfg
 {
     public class Config
     {
+        // Interface
+        // 0 = English, 1 = Chinese. This is persisted with the rest of the profile.
+        public static int Language;
+
         // Soft Aim
         public static bool SoftAim = true;
         public static KeyCode SoftAimKey = KeyCode.Mouse0;
@@ -31,14 +35,6 @@ namespace Vape.Cfg
         public static bool ConePredict;
         public static float Accurary;
 
-        // History Hit
-        public static bool HistoryHit;
-        public static int HistoryWindow = 200;
-        public static bool HistoryPreferLive = true;
-        public static bool HistoryNoWall = true;
-        public static bool HistoryTrail;
-        public static bool HistoryAutoShoot;
-
         // Angle Fix
         public static bool AngleFix;
         public static bool AngleFixRandom;
@@ -52,22 +48,32 @@ namespace Vape.Cfg
         public static float DesyncJitterMin;
         public static float DesyncJitterMax;
         public static int DesyncSpin;
-        public static bool PacketHold;
-        public static int PacketHoldTicks = 6;
 
         // Camera
         public static bool OrbitCam;
         public static KeyCode OrbitKey;
-        public static int OrbitFov;
+        public static int OrbitFov = 90;
         public static bool LensCustom;
-        public static float LensFov;
+        public static float LensFov = 90f;
 
         // Motion
-        public static bool AutoHop = true;
-        public static bool AirPath;
+        // 八向连跳 (Aura 式): 自动起跳 + 空中八向变向, 默认左Alt可改
+        public static bool Bhop8Dir;
+        public static KeyCode BhopKey = KeyCode.LeftAlt;
+        public static int BhopActivationMode; // 0 = Hold, 1 = Toggle
         public static bool Airglide;
-        public static KeyCode AirPathKey = KeyCode.Mouse4;
         public static bool GhostStep;
+        public static bool SpeedBoost;
+        public static KeyCode SpeedBoostKey = KeyCode.N;
+        public static float SpeedBoostMultiplier = 18f;
+        public static int SpeedBoostFrames = 10;
+        public static int SpeedBoostFrameInterval = 16;
+        public static bool SpeedBoostRewriteRenderTime = true;
+        public static bool BlinkMove;
+        public static KeyCode BlinkMoveKey = KeyCode.LeftAlt;
+        public static int BlinkMaxPackets = 600;
+        public static int BlinkSyncPacketsPerFrame = 8;
+        public static float BlinkSpeedMultiplier = 2f;
 
         // ESP core
         public static bool EspMaster = true;
@@ -95,6 +101,11 @@ namespace Vape.Cfg
         public static bool Reticle;
         public static bool StateStrip = true;
         public static bool VelocityRing = true;
+        public static bool KeyHud = true;
+        public static bool CsgoHud;
+        public static bool PhysxModel;
+        public static bool PhysxBlackMap;
+        public static float PhysxModelDistance = 120f;
         public static bool LootTags = true;
         public static bool LootGlow = true;
         public static bool ProjectileTags = true;
@@ -105,5 +116,13 @@ namespace Vape.Cfg
         public static bool AutoSpam;
         public static string SpamText;
         public static bool PathAssist;
+
+        // Crouch Assist (蹲跳辅助) — 移植自 Aura
+        public static bool CrouchAssist;
+        public static KeyCode CrouchAssistKey = KeyCode.LeftControl;
+
+        // Instant Sniper (瞬间开镜) — 移植自 Aura
+        public static bool InstantSniper;
+        public static KeyCode InstantSniperKey = KeyCode.Mouse3;
     }
 }
