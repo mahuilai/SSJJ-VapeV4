@@ -7,7 +7,8 @@
 ## 预览图
 
 
-### 驱动保护过检测(详情请见底层组件驱动.sys)
+### 驱动保护过检测 
+(详情请见:底层组件)
 
 ![驱动保护过检测示意图](docs/images/驱动保护过检测.png)
 ![驱动过检测](https://github.com/mahuilai/SSJJ-VapeV4/blob/main/5cc4622221ac267d4b6c407065db26c4.png)
