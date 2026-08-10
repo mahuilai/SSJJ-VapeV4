@@ -142,8 +142,10 @@ tools/DickInjector/
 以下流程只适用于你拥有或明确获准测试的 Unity/Mono 程序：
 
 1. 将 `tools/DickInjector/` 复制到桌面，例如 `C:\Users\Mahuilai\Desktop\SharpMonoInjector\`。
+
    注入器地址：https://github.com/mahuilai/SSJJ-VapeV4/tree/main/tools/DickInjector
-3. 确认 `Dick.exe` 与 `Dick.Core.dll` 位于同一层目录。
+   
+2. 确认 `Dick.exe` 与 `Dick.Core.dll` 位于同一层目录。
 
 ![Dick 注入器目录示例](docs/images/Dick注入器目录示例.png)
 
@@ -156,7 +158,9 @@ tools/DickInjector/
 ![驱动保护过检测示意图](docs/images/驱动保护过检测.png)
 
 5. 运行 `Dick.exe`，选择目标 Mono 进程和 `Vape.dll`。
+
 Vape.dll产物地址：https://github.com/mahuilai/SSJJ-VapeV4/blob/main/bin/Release/Vape.dll
+
 ![注入器配置页面示意图](docs/images/注入器配置页面.png)
 
 6. 使用以下入口配置：
